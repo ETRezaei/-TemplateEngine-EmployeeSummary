@@ -1,0 +1,25 @@
+{
+  "name": "templateengine-employeesummary",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ETRezaei/TemplateEngine-EmployeeSummary.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ETRezaei/TemplateEngine-EmployeeSummary/issues"
+  },
+  "homepage": "https://github.com/ETRezaei/TemplateEngine-EmployeeSummary#readme",
+  "dependencies": {
+    "inquirer": "^7.0.0"
+  }
+}
