@@ -1,8 +1,8 @@
 const inquirer = require("inquirer");
-const Engineer = require("./Engineer");
-const Intern = require("./Intern");
-const Manager = require("./Manager");
-const Employee = require("./Employee");
+const Engineer = require("./lib/Engineer");
+const Intern = require("./lib/Intern");
+const Manager = require("./lib/Manager");
+const Employee = require("./lib/Employee");
 var http = require("http");
 var fs = require("fs");
 
@@ -72,6 +72,7 @@ async function getInternInfo(){
     ])
     let intern = new Intern(name, id, email, school);
     emplyees.push(intern);
+    console.log(emplyees);
     getUserInfo();
 }
 async function getManagerInfo(){
@@ -95,6 +96,7 @@ async function getManagerInfo(){
     ])
     let manager = new Manager(name, id, email, officeNumber);
     emplyees.push(manager);
+    console.log(emplyees);
     getUserInfo();
 
 
@@ -110,31 +112,146 @@ switch (position) {
     case "Intern":
       return getInternInfo();
         break;
-    case "No more employee":
+    case "No more employee":       
+        console.log(html(emplyees));
+        fs.writeFile("index.html", html(emplyees), function(err) {
+
+            if (err) {
+            return console.log(err);
+            }
+        
+            console.log("Success!");
+        
+        });
         break;
     }
     
 
 }
+let html = function(data){
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Page</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-var server = http.createServer(handleRequest);
-
-// Create a function for handling the requests and responses coming into our server
-function handleRequest(req, res) {
-
-  // Here we use the fs package to read our index.html file
-  fs.readFile(__dirname + "/index.html", function(err, data) {
-    // console.log(__dirname);
-    if (err) throw err;
-    // We then respond to the client with the HTML page by specifically telling the browser that we are delivering
-    // an html file.
-    res.writeHead(200, { "Content-Type": "text/html" });
-    res.write(emplyees)
-    res.end(data);
-  });
+</head>
+<body>
+	<div class="jumbotron">
+		<h1 class="text-center">My Team</h1>
+    </div>
+    ${getContent(data)}
+</body>
+</html>
+`
+}
+function getContent(data){
+    console.log("getContent called")
+    return data.map(obj =>{ 
+        let position = obj.getRole();
+        console.log(position);
+        switch(position){
+            case "Manager":
+                return getManagerCard(obj);
+                break;
+            case "Engineer":
+                return getEngineerCard(obj);
+                break;
+            case "Intern":
+                return getInternCard(obj);
+                break;
+        }
+            
+    }).join('\n')
 }
 
-// Starts our server
-server.listen(PORT, function() {
-  console.log("Server is listening on PORT: " + PORT);
-});
+function getManagerCard(obj){
+    console.log(obj.name);
+
+    let mangerCard = 
+    `
+    <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">
+                   ${obj.name}<br>
+                   ${obj.getRole()}
+                  </div>
+      <div class="card-body">
+        <form role="form">			
+          <div class="form-group">
+              <label for="reserve-unique-id" id="reserve-unique-id">ID: ${obj.id}</label>
+          </div>
+          <div class="form-group">
+            <label for="reserve-email" id="reserve-email">Email: ${obj.email}</label>
+          </div>
+          <div class="form-group">
+              <label for="reserve-phone" id="reserve-office-number">Office Number: ${obj.officeNumber}</label>					
+          </div>				
+          </form>
+      </div>
+    </div>
+  </div>
+  `
+  console.log(mangerCard);
+  return mangerCard
+}
+function getEngineerCard(obj){
+    let engineerCard = 
+    `
+    <div class="col-md-3">
+    <div class="card">
+    <div class="card-header">
+                ${obj.name} <br>
+                ${obj.getRole()}
+                </div>
+    <div class="card-body">
+        <form role="form">			
+        <div class="form-group">
+            <label for="reserve-unique-id" id="reserve-unique-id">ID: ${obj.id}</label>
+        </div>
+        <div class="form-group">
+            <label for="reserve-email" id="reserve-email">Email:${obj.email} </label>
+        </div>
+        <div class="form-group">
+            <label for="reserve-phone" id="reserve-github">GitHub: ${obj.github}</label>					
+        </div>				
+        </form>
+    </div>
+    </div>
+</div>
+    `
+    return engineerCard
+}
+function getInternCard(obj){
+    let internCard = 
+    `
+    <div class="col-md-3">
+				<div class="card">
+				  <div class="card-header">
+							   ${obj.name}<br>
+							   ${obj.getRole()}
+							  </div>
+				  <div class="card-body">
+					<form role="form">			
+					  <div class="form-group">
+						  <label for="reserve-unique-id" id="reserve-unique-id">ID:${obj.id} </label>
+					  </div>
+					  <div class="form-group">
+						<label for="reserve-email" id="reserve-email">Email: ${obj.email}</label>
+					  </div>
+					  <div class="form-group">
+						  <label for="reserve-phone" id="school">School: ${obj.school}</label>					
+					  </div>				
+					  </form>
+				  </div>
+				</div>
+			  </div>
+    `
+    return internCard
+}
+
+
+  
