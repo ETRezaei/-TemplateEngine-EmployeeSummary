@@ -3,11 +3,8 @@ const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
 const Manager = require("./lib/Manager");
 const Employee = require("./lib/Employee");
-var http = require("http");
 var fs = require("fs");
 
-// Set our port to 8080
-var PORT = 8080;
 
 let emplyees = [];
 
@@ -133,17 +130,35 @@ let html = function(data){
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Page</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+  <title>Page</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
 </head>
 <body>
-	<div class="jumbotron">
-		<h1 class="text-center">My Team</h1>
+    <style>
+        .ul{
+            list-style-type:none;
+            right: -200px;
+            position: relative;
+        }
+        li{
+            float: left;
+            margin-left: 20px;
+        }
+        .cardbody{
+            width: 200px;
+        }
+    </style>
+	<div class="jumbotron" style="background: #f06292" > 
+		<h1 class="text-center" >My Team</h1>
     </div>
+    <ul class="ul">
+        
     ${getContent(data)}
+        
+    </ul>
 </body>
 </html>
 `
@@ -173,11 +188,12 @@ function getManagerCard(obj){
 
     let mangerCard = 
     `
+    <li>
     <div class="col-md-3">
-    <div class="card">
-      <div class="card-header">
+    <div class="card cardbody">
+      <div class="card-header" style="background: #90caf9">
                    ${obj.name}<br>
-                   ${obj.getRole()}
+                   <div class="fa fa-fighter-jet">${obj.getRole()}</div>
                   </div>
       <div class="card-body">
         <form role="form">			
@@ -194,6 +210,7 @@ function getManagerCard(obj){
       </div>
     </div>
   </div>
+  </li>
   `
   console.log(mangerCard);
   return mangerCard
@@ -201,11 +218,12 @@ function getManagerCard(obj){
 function getEngineerCard(obj){
     let engineerCard = 
     `
+    <li>
     <div class="col-md-3">
-    <div class="card">
-    <div class="card-header">
+    <div class="card cardbody">
+    <div class="card-header" style="background: #90caf9">
                 ${obj.name} <br>
-                ${obj.getRole()}
+               <div class="fa fa-android"> ${obj.getRole()}</div>
                 </div>
     <div class="card-body">
         <form role="form">			
@@ -222,17 +240,19 @@ function getEngineerCard(obj){
     </div>
     </div>
 </div>
+<li>
     `
     return engineerCard
 }
 function getInternCard(obj){
     let internCard = 
     `
+    <li>
     <div class="col-md-3">
-				<div class="card">
-				  <div class="card-header">
+				<div class="card cardbody">
+				  <div class="card-header" style="background: #90caf9">
 							   ${obj.name}<br>
-							   ${obj.getRole()}
+							  <div class="fa fa-acorn"> ${obj.getRole()}</div>
 							  </div>
 				  <div class="card-body">
 					<form role="form">			
@@ -248,7 +268,9 @@ function getInternCard(obj){
 					  </form>
 				  </div>
 				</div>
-			  </div>
+              </div>
+              <li>
+
     `
     return internCard
 }
