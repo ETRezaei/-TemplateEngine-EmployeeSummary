@@ -252,7 +252,7 @@ function getInternCard(obj){
 				<div class="card cardbody">
 				  <div class="card-header" style="background: #90caf9">
 							   ${obj.name}<br>
-							  <div class="fa fa-acorn"> ${obj.getRole()}</div>
+							  <div><i class="fa fa-trophy"></i> ${obj.getRole()}</div>
 							  </div>
 				  <div class="card-body">
 					<form role="form">			
